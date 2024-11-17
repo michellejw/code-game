@@ -7,7 +7,7 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Play } from 'lucide-react'
+import { Loader2, Play, HelpCircle } from 'lucide-react'
 import { challenges } from '@/lib/challenges'
 import CodeEntryDialog from '@/components/CodeEntryDialog'
 
@@ -23,6 +23,10 @@ declare global {
 
 interface PyodideInterface {
   runPythonAsync: (code: string) => Promise<unknown>
+  _module: {
+    stdout: (text: string) => void
+    stderr: (text: string) => void
+  }
 }
 
 interface OutputEntry {
@@ -39,9 +43,11 @@ const KidPythonChallenge: React.FC = () => {
   const [showCodeEntry, setShowCodeEntry] = useState(false)
   const [codeSuccess, setCodeSuccess] = useState(false)
   const [showClue, setShowClue] = useState(false)
+  const [showHint, setShowHint] = useState(false)
   const outputRef = useRef<HTMLDivElement>(null)
   const [codeError, setCodeError] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
+  const currentOutputRef = useRef('') // New ref to track output synchronously
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -54,6 +60,7 @@ const KidPythonChallenge: React.FC = () => {
           const pyodideInstance = await window.loadPyodide({
             indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
             stdout: (text: string) => {
+              currentOutputRef.current = text // Update ref immediately
               setOutput((prev) => [...prev, { type: 'output', content: text }])
             },
             stderr: (text: string) => {
@@ -83,19 +90,23 @@ const KidPythonChallenge: React.FC = () => {
     setCode(challenges[currentChallenge].initialCode)
     setOutput([])
     setCodeSuccess(false)
+    setShowHint(false)
+    currentOutputRef.current = '' // Reset the output ref
   }, [currentChallenge])
 
   const runCode = async () => {
     if (!pyodide || !code.trim()) return
 
     const challenge = challenges[currentChallenge]
-    console.log('Starting challenge:', challenge) // Debug log
+    console.log('Starting code execution with:', code)
     setOutput([{ type: 'input', content: 'Running your code...' }])
     setShowClue(false)
+    setShowHint(false)
+    currentOutputRef.current = '' // Reset output before running
 
     try {
       await pyodide.runPythonAsync(code)
-      console.log('Code ran successfully') // Debug log
+      console.log('Code execution complete, output:', currentOutputRef.current)
 
       if (challenge.requiredCode && !code.includes(challenge.requiredCode)) {
         setOutput((prev) => [
@@ -108,16 +119,36 @@ const KidPythonChallenge: React.FC = () => {
         return
       }
 
-      setOutput((prev) => [
-        ...prev,
-        { type: 'output', content: '-------' },
-        { type: 'output', content: challenges[currentChallenge].nextClue },
-      ])
+      // Use the ref for validation instead of state
+      console.log(
+        'Attempting validation with output:',
+        currentOutputRef.current
+      )
+      const isValid = challenge.validateOutput(currentOutputRef.current)
+      console.log('Validation result:', isValid)
 
-      console.log('Setting code success and show clue') // Debug log
-      setCodeSuccess(true)
-      setShowClue(true)
+      if (isValid) {
+        setOutput((prev) => [
+          ...prev,
+          { type: 'success', content: '🎉 Great job!' },
+          { type: 'output', content: '-------' },
+          { type: 'output', content: challenge.nextClue },
+        ])
+        setCodeSuccess(true)
+        setShowClue(true)
+      } else {
+        setOutput((prev) => [
+          ...prev,
+          {
+            type: 'error',
+            content:
+              "That's not quite right. Want to try again? Click the hint button if you need help! 🤔",
+          },
+        ])
+        setShowHint(true)
+      }
     } catch (error) {
+      console.error('Code execution error:', error)
       const errorMessage =
         error instanceof Error
           ? error.message
@@ -130,6 +161,7 @@ const KidPythonChallenge: React.FC = () => {
           content: errorMessage,
         },
       ])
+      setShowHint(true)
     }
   }
 
@@ -150,6 +182,16 @@ const KidPythonChallenge: React.FC = () => {
 
   const handleShowClue = () => {
     setShowCodeEntry(true)
+  }
+
+  const handleShowHint = () => {
+    const challenge = challenges[currentChallenge]
+    if (challenge.hint) {
+      setOutput((prev) => [
+        ...prev,
+        { type: 'success', content: '💡 Hint: ' + challenge.hint },
+      ])
+    }
   }
 
   if (isCompleted) {
@@ -177,14 +219,26 @@ const KidPythonChallenge: React.FC = () => {
               {challenges[currentChallenge].title}
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             </div>
-            <Button
-              onClick={runCode}
-              disabled={loading}
-              className="flex items-center gap-2 bg-purple-500 hover:bg-purple-600"
-            >
-              <Play className="h-4 w-4" />
-              Run My Code!
-            </Button>
+            <div className="flex gap-2">
+              {showHint && (
+                <Button
+                  onClick={handleShowHint}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <HelpCircle className="h-4 w-4" />
+                  Need a hint?
+                </Button>
+              )}
+              <Button
+                onClick={runCode}
+                disabled={loading}
+                className="flex items-center gap-2 bg-purple-500 hover:bg-purple-600"
+              >
+                <Play className="h-4 w-4" />
+                Run My Code!
+              </Button>
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -213,7 +267,7 @@ const KidPythonChallenge: React.FC = () => {
           <div className="space-y-4">
             <div
               ref={outputRef}
-              className="h-32 p-4 bg-gray-900 rounded-md overflow-y-auto font-mono text-lg"
+              className="p-4 bg-gray-900 rounded-md font-mono text-lg"
             >
               {output.map((entry, i) => (
                 <div

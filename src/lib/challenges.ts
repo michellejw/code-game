@@ -49,7 +49,7 @@ export const challenges: Challenge[] = [
     validateOutput: (output: string) => {
       return output.toLowerCase().includes('the magic word is: please')
     },
-    nextClue: 'Amazing! Look in the Ada Twist book for the next clue! 📚',
+    nextClue: 'Amazing! Look in the Rosie Revere book for the next clue! 📚',
     requiredCode: 'print',
     unlockCode: 'BOOK',
     hint: "What do we say when we want something? It starts with P and ends with E!",

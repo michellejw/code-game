@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Play, HelpCircle } from 'lucide-react'
 import { challenges } from '@/lib/challenges'
 import CodeEntryDialog from '@/components/CodeEntryDialog'
+import '@/app/globals.css'
 
 declare global {
   interface Window {
@@ -219,26 +220,6 @@ const KidPythonChallenge: React.FC = () => {
               {challenges[currentChallenge].title}
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             </div>
-            <div className="flex gap-2">
-              {showHint && (
-                <Button
-                  onClick={handleShowHint}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <HelpCircle className="h-4 w-4" />
-                  Need a hint?
-                </Button>
-              )}
-              <Button
-                onClick={runCode}
-                disabled={loading}
-                className="flex items-center gap-2 bg-purple-500 hover:bg-purple-600"
-              >
-                <Play className="h-4 w-4" />
-                Run My Code!
-              </Button>
-            </div>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -264,6 +245,27 @@ const KidPythonChallenge: React.FC = () => {
             }}
           />
 
+          <div className="flex gap-2">
+            {showHint && (
+              <Button
+                onClick={handleShowHint}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <HelpCircle className="h-4 w-4" />
+                Need a hint?
+              </Button>
+            )}
+            <Button
+              onClick={runCode}
+              disabled={loading}
+              className="flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-lg"
+            >
+              <Play className="h-4 w-4" />
+              Run My Code!
+            </Button>
+          </div>
+
           <div className="space-y-4">
             <div
               ref={outputRef}
@@ -288,9 +290,9 @@ const KidPythonChallenge: React.FC = () => {
             {showClue && (
               <Button
                 onClick={handleShowClue}
-                className="w-full bg-green-500 hover:bg-green-600"
+                className="w-full bg-green-500 hover:bg-green-600 text-lg"
               >
-                Show Next Clue! 🎯
+                Enter the secret code! 🔓
               </Button>
             )}
           </div>

@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Python Treasure Hunt! 🗺️
+
+Welcome to the **Python Treasure Hunt** project! This interactive coding challenge is designed to help kids learn Python programming in a fun and engaging way. By solving challenges, they can unlock clues and progress through a fun scavenger hunt, right at home!
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [How It Works](#how-it-works)
+- [Creating Your Own Challenges](#creating-your-own-challenges)
+- [Resources](#resources)
+- [Contributing](#contributing)
 
 ## Getting Started
 
-First, run the development server:
+To get started with this project, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/michellejw/code-game.git
+   cd code-game
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Run the Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Open Your Browser**: Navigate to [http://localhost:3000](http://localhost:3000) to see the application in action!
+
+## Project Structure
+
+The project is organized as follows:
+
+```
+.
+├── src
+│ ├── app
+│ ├── components
+│ ├── lib
+│ └── styles
+├── README.md
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **src/app**: Contains the main application files.
+- **src/components**: Reusable components for the application.
+- **src/lib**: Contains utility functions and challenge definitions.
+- **src/styles**: Global styles for the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Works
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Python Treasure Hunt consists of a series of coding challenges that kids can solve to progress. In its current state, it requires an adult to edit the challenges (because the clues are hidden in the house where the kids are). Parents may also wish to add or edit the challenges to make them more appropriate for their child.
 
-## Learn More
+Each challenge includes:
 
-To learn more about Next.js, take a look at the following resources:
+- **A Description**: Explains what the child needs to do.
+- **Initial Code**: Provides a starting point for the challenge.
+- **Validation**: Checks if the output is correct.
+- **Clues**: Hidden messages that are used to unlock the next challenge.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Example Challenge
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Challenge: Print Your Name**
 
-## Deploy on Vercel
+```python
+name = "your_name"
+print("Hello, " + name)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Kids will learn to modify the code to print their name, unlocking the codes for each challenge in the  treasure hunt!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Creating Your Own Challenges
+
+You can easily add new challenges by following these steps:
+
+1. **Define the Challenge**: In src/lib/challenges.ts, create a new challenge object with the following properties:
+   - id: Unique identifier for the challenge.
+   - title: Title of the challenge.
+   - description: Instructions for the challenge.
+   - initialCode: Starting code for the challenge.
+   - validateOutput: Function to validate the output.
+   - nextClue: Clue for the next challenge.
+   - unlockCode: Code to unlock the next clue.
+
+2. **Test Your Challenge**: Run the application and ensure your new challenge works as expected.
+
+## Resources
+
+- [Python Documentation](https://docs.python.org/3/)
+- [Learn Python](https://www.learnpython.org/)
+- [CodeMirror Documentation](https://codemirror.net/doc/manual.html)
+
+## Contributing
+
+We welcome contributions! If you have ideas for new challenges or improvements, feel free to submit a pull request or open an issue. 

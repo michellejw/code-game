@@ -1,6 +1,6 @@
 # Python Treasure Hunt! 🗺️
 
-Welcome to the **Python Treasure Hunt** project! This interactive coding challenge is designed to help kids learn Python programming in a fun and engaging way. By solving challenges, they can unlock clues and progress through a fun scavenger hunt, right at home!
+Welcome to the **Python Treasure Hunt** project! This interactive coding challenge is designed to help kids learn Python programming in a fun and engaging way. By solving challenges, they can unlock clues and progress through a mini scavenger hunt, right at home!
 
 ## Table of Contents
 
@@ -55,7 +55,7 @@ The project is organized as follows:
 
 ## How It Works
 
-The Python Treasure Hunt consists of a series of coding challenges that kids can solve to progress. In its current state, it requires an adult to edit the challenges (because the clues are hidden in the house where the kids are). Parents may also wish to add or edit the challenges to make them more appropriate for their child.
+The Python Treasure Hunt consists of a series of coding challenges that kids can solve to progress. You'll need to edit the clues based on where they're hidden in your house. And you may want to edit the challenges to make them more appropriate for your child.
 
 Each challenge includes:
 

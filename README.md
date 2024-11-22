@@ -98,4 +98,4 @@ You can easily add new challenges by following these steps:
 
 ## Contributing
 
-We welcome contributions! If you have ideas for new challenges or improvements, feel free to submit a pull request or open an issue. 
+Contributions are welcome! If you have ideas for new challenges or improvements, feel free to submit a pull request or open an issue. 

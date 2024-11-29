@@ -1,27 +1,31 @@
-import React from 'react';
+import React from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 interface CodeEntryDialogProps {
-  isOpen: boolean;
-  hasError?: boolean;
-  onCodeSubmit: (code: string) => void;
+  isOpen: boolean
+  hasError?: boolean
+  onCodeSubmit: (code: string) => void
 }
 
-const CodeEntryDialog: React.FC<CodeEntryDialogProps> = ({ isOpen, hasError, onCodeSubmit }) => {
-  const [code, setCode] = React.useState('');
+const CodeEntryDialog: React.FC<CodeEntryDialogProps> = ({
+  isOpen,
+  hasError,
+  onCodeSubmit,
+}) => {
+  const [code, setCode] = React.useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onCodeSubmit(code.toUpperCase());
-  };
+    e.preventDefault()
+    onCodeSubmit(code.toUpperCase())
+  }
 
   return (
     <Dialog open={isOpen}>
@@ -29,9 +33,9 @@ const CodeEntryDialog: React.FC<CodeEntryDialogProps> = ({ isOpen, hasError, onC
         <DialogHeader>
           <DialogTitle>Enter the secret code!</DialogTitle>
           <DialogDescription>
-            {hasError ?
-              "That code wasn't quite right. Check the clue and try again! 🔍" :
-              "Enter the code you found from the clue"}
+            {hasError
+              ? "That code wasn't quite right. Check the clue and try again! 🔍"
+              : 'Enter the code you found from the clue'}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -47,7 +51,7 @@ const CodeEntryDialog: React.FC<CodeEntryDialogProps> = ({ isOpen, hasError, onC
         </form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default CodeEntryDialog;
+export default CodeEntryDialog

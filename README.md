@@ -16,17 +16,20 @@ Welcome to the **Python Treasure Hunt** project! This interactive coding challen
 To get started with this project, follow these steps:
 
 1. **Clone the Repository**:
+
    ```bash
    git clone https://github.com/michellejw/code-game.git
    cd code-game
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Run the Development Server**:
+
    ```bash
    npm run dev
    ```
@@ -73,13 +76,14 @@ name = "your_name"
 print("Hello, " + name)
 ```
 
-Kids will learn to modify the code to print their name, unlocking the codes for each challenge in the  treasure hunt!
+Kids will learn to modify the code to print their name, unlocking the codes for each challenge in the treasure hunt!
 
 ## Creating Your Own Challenges
 
 You can easily add new challenges by following these steps:
 
 1. **Define the Challenge**: In src/lib/challenges.ts, create a new challenge object with the following properties:
+
    - id: Unique identifier for the challenge.
    - title: Title of the challenge.
    - description: Instructions for the challenge.
@@ -98,4 +102,4 @@ You can easily add new challenges by following these steps:
 
 ## Contributing
 
-Contributions are welcome! If you have ideas for new challenges or improvements, feel free to submit a pull request or open an issue. 
+Contributions are welcome! If you have ideas for new challenges or improvements, feel free to submit a pull request or open an issue.

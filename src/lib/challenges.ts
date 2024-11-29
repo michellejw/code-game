@@ -21,7 +21,8 @@ export const challenges: Challenge[] = [
     validateOutput: (output: string) => {
       return output.startsWith('Hello, ') && output.trim() !== 'Hello, '
     },
-    nextClue: 'Great job! Look under your pillow for the code to unlock the next clue! 🦄',
+    nextClue:
+      'Great job! Look under your pillow for the code to unlock the next clue! 🦄',
     requiredCode: 'print',
     unlockCode: 'UNICORN',
     hint: 'Make sure to put your name between the quotes!',
@@ -35,7 +36,8 @@ export const challenges: Challenge[] = [
     validateOutput: (output: string) => {
       return output.includes('You have 10 apples')
     },
-    nextClue: 'Super! Check behind the TV for the code to unlock the next clue! 📺',
+    nextClue:
+      'Super! Check behind the TV for the code to unlock the next clue! 📺',
     requiredCode: 'print',
     unlockCode: 'APPLES',
     hint: 'Remember: 5 apples + 5 more apples = 10 apples. What starting number do you need?',
@@ -49,10 +51,11 @@ export const challenges: Challenge[] = [
     validateOutput: (output: string) => {
       return output.toLowerCase().includes('the magic word is: please')
     },
-    nextClue: 'Amazing! Look in the Rosie Revere book for the code to unlock the next clue! 📚',
+    nextClue:
+      'Amazing! Look in the Rosie Revere book for the code to unlock the next clue! 📚',
     requiredCode: 'print',
     unlockCode: 'BOOK',
-    hint: "What do we say when we want something? It starts with P and ends with E!",
+    hint: 'What do we say when we want something? It starts with P and ends with E!',
   },
   {
     id: '4',
@@ -63,7 +66,8 @@ export const challenges: Challenge[] = [
     validateOutput: (output: string) => {
       return output.toLowerCase().includes('the password is: open sesame')
     },
-    nextClue: 'Excellent! Check inside your blue crocs for the code to unlock the next clue! 👟',
+    nextClue:
+      'Excellent! Check inside your blue crocs for the code to unlock the next clue! 👟',
     requiredCode: 'print',
     unlockCode: 'SHOES',
     hint: 'What magical words did Ali Baba use to open the cave? (It starts with OPEN...)',
@@ -77,10 +81,11 @@ export const challenges: Challenge[] = [
     validateOutput: (output: string) => {
       return output.toLowerCase().includes('the dog says: woof!')
     },
-    nextClue: 'Perfect! Look in the dog crate for the code to unlock the next clue! 🎁',
+    nextClue:
+      'Perfect! Look in the dog crate for the code to unlock the next clue! 🎁',
     requiredCode: 'print',
     unlockCode: 'WELCOME',
-    finalPrizeLocation: "Check the porch egg chair for your grand prize! 🎉",
+    finalPrizeLocation: 'Check the porch egg chair for your grand prize! 🎉',
     hint: 'What sound does a dog make? It starts with W and ends with F!',
   },
 ]

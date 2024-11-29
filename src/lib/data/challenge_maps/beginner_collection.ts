@@ -8,28 +8,28 @@ export const beginnerCollection: ChallengeMap = {
     {
       challengeId: '1', // Print Your Name challenge
       clueId: 'pillow',
-      unlockCode: 'UNICORN'
+      unlockCode: 'UNICORN',
     },
     {
-      challengeId: '2', // Counting Apples challenge  
+      challengeId: '2', // Counting Apples challenge
       clueId: 'tv',
-      unlockCode: 'APPLES'
+      unlockCode: 'APPLES',
     },
     {
       challengeId: '3', // Magic Word challenge
       clueId: 'book',
-      unlockCode: 'BOOK'
+      unlockCode: 'BOOK',
     },
     {
       challengeId: '4', // Secret Password challenge
-      clueId: 'shoes', 
-      unlockCode: 'SHOES'
+      clueId: 'shoes',
+      unlockCode: 'SHOES',
     },
     {
       challengeId: '5', // Animal Sounds challenge
       clueId: 'crate',
       unlockCode: 'WELCOME',
-      isFinal: true
-    }
-  ]
+      isFinal: true,
+    },
+  ],
 }

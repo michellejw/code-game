@@ -8,8 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Play, HelpCircle } from 'lucide-react'
-import { challenges } from '@/lib/challenges'
+import { challenges } from '@/lib/data/challenges/index'
 import CodeEntryDialog from '@/components/CodeEntryDialog'
+import { getClueById } from '@/lib/data/clueUtils'
 import '@/app/globals.css'
 
 declare global {
@@ -129,11 +130,12 @@ const KidPythonChallenge: React.FC = () => {
       console.log('Validation result:', isValid)
 
       if (isValid) {
+        const clue = getClueById(challenges[currentChallenge].clueId);
         setOutput((prev) => [
           ...prev,
           { type: 'success', content: '🎉 Great job!' },
           { type: 'output', content: '-------' },
-          { type: 'output', content: challenge.nextClue },
+          { type: 'output', content: clue?.clue || 'No clue available.' },
         ])
         setCodeSuccess(true)
         setShowClue(true)
@@ -196,6 +198,7 @@ const KidPythonChallenge: React.FC = () => {
   }
 
   if (isCompleted) {
+    const finalClue = getClueById(challenges[challenges.length - 1].clueId);
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-4">
         <Card className="w-full max-w-2xl">
@@ -203,7 +206,7 @@ const KidPythonChallenge: React.FC = () => {
             <h1 className="text-4xl font-bold mb-4">🎉 Congratulations! 🎉</h1>
             <p className="text-2xl">You have solved all the code puzzles!</p>
             <p className="text-xl font-medium text-purple-600">
-              {challenges[challenges.length - 1].finalPrizeLocation}
+              {finalClue?.clue || 'No final prize location available.'}
             </p>
           </CardContent>
         </Card>

@@ -130,7 +130,7 @@ const KidPythonChallenge: React.FC = () => {
       console.log('Validation result:', isValid)
 
       if (isValid) {
-        const clue = getClueById(challenges[currentChallenge].clueId);
+        const clue = getClueById(challenges[currentChallenge].clueId)
         setOutput((prev) => [
           ...prev,
           { type: 'success', content: '🎉 Great job!' },
@@ -198,7 +198,7 @@ const KidPythonChallenge: React.FC = () => {
   }
 
   if (isCompleted) {
-    const finalClue = getClueById(challenges[challenges.length - 1].clueId);
+    const finalClue = getClueById(challenges[challenges.length - 1].clueId)
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-4">
         <Card className="w-full max-w-2xl">

@@ -363,7 +363,11 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
         isOpen={showCodeEntry}
         hasError={codeError}
         onCodeSubmit={handleCodeSubmit}
-        successMessage={showSuccessMessage ? "🎉 You got it right! Click below to continue to the next challenge." : ""}
+        successMessage={
+          showSuccessMessage
+            ? '🎉 You got it right! Click below to continue to the next challenge.'
+            : ''
+        }
         onContinue={continueToNextChallenge}
       />
     </div>

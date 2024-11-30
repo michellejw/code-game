@@ -39,7 +39,10 @@ const CodeEntryDialog: React.FC<CodeEntryDialogProps> = ({
             <Dialog.Title>Success!</Dialog.Title>
             <div className="mt-4">
               <p className="text-green-500">{successMessage}</p>
-              <Button onClick={onContinue} className="mt-2 bg-blue-500 hover:bg-blue-600">
+              <Button
+                onClick={onContinue}
+                className="mt-2 bg-blue-500 hover:bg-blue-600"
+              >
                 Continue to Next Challenge
               </Button>
             </div>
@@ -64,11 +67,16 @@ const CodeEntryDialog: React.FC<CodeEntryDialogProps> = ({
           <div className="mt-2">
             <Button onClick={handleSubmit}>Submit</Button>
           </div>
-          {hasError && <p className="text-red-500">Incorrect code, please try again.</p>}
+          {hasError && (
+            <p className="text-red-500">Incorrect code, please try again.</p>
+          )}
           {successMessage && (
             <div className="mt-4">
               <p className="text-green-500">{successMessage}</p>
-              <Button onClick={onContinue} className="mt-2 bg-blue-500 hover:bg-blue-600">
+              <Button
+                onClick={onContinue}
+                className="mt-2 bg-blue-500 hover:bg-blue-600"
+              >
                 Continue to Next Challenge
               </Button>
             </div>

@@ -7,22 +7,28 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Play, HelpCircle } from 'lucide-react'
+import { Loader2, Play, HelpCircle, Home } from 'lucide-react'
 import { challenges } from '@/lib/data/challenges/index'
 import CodeEntryDialog from '@/components/CodeEntryDialog'
 import { getClueById } from '@/lib/data/clueUtils'
-import '@/app/globals.css'
+import { collections } from '@/lib/data/collections/index'
+import '@/../app/globals.css'
+import Link from 'next/link'
 
+// Extend the Window interface to include Pyodide loader
+// This allows TypeScript to recognize the loadPyodide function that gets injected by the Pyodide script
 declare global {
   interface Window {
+    // Define the loadPyodide function that takes a config object and returns a Promise of PyodideInterface
     loadPyodide: (config: {
-      indexURL: string
-      stdout?: (text: string) => void
-      stderr?: (text: string) => void
+      indexURL: string // URL where Pyodide files are hosted
+      stdout?: (text: string) => void // Optional handler for standard output
+      stderr?: (text: string) => void // Optional handler for error output
     }) => Promise<PyodideInterface>
   }
 }
 
+// Define interfaces for Pyodide JavaScript bridge
 interface PyodideInterface {
   runPythonAsync: (code: string) => Promise<unknown>
   _module: {
@@ -31,26 +37,48 @@ interface PyodideInterface {
   }
 }
 
+// Define types for code output entries
 interface OutputEntry {
   type: 'input' | 'output' | 'error' | 'success'
   content: string
 }
 
-const KidPythonChallenge: React.FC = () => {
+// Props interface for PythonEditor component
+interface PythonEditorProps {
+  collectionId: string
+}
+
+// Main PythonEditor component
+const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
+  // State management for Pyodide instance and loading
   const [pyodide, setPyodide] = useState<PyodideInterface | null>(null)
   const [loading, setLoading] = useState(true)
+  
+  // State for code execution and output
   const [output, setOutput] = useState<OutputEntry[]>([])
   const [currentChallenge, setCurrentChallenge] = useState(0)
   const [code, setCode] = useState(challenges[0].initialCode)
+  
+  // UI state management
   const [showCodeEntry, setShowCodeEntry] = useState(false)
   const [codeSuccess, setCodeSuccess] = useState(false)
   const [showClue, setShowClue] = useState(false)
   const [showHint, setShowHint] = useState(false)
-  const outputRef = useRef<HTMLDivElement>(null)
   const [codeError, setCodeError] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
-  const currentOutputRef = useRef('') // New ref to track output synchronously
+  
+  // Refs for DOM and output tracking
+  const outputRef = useRef<HTMLDivElement>(null)
+  const currentOutputRef = useRef('') 
 
+  // Get current collection data
+  const currentCollection = collections.find(col => col.id === collectionId);
+  
+  if (!currentCollection) {
+    return <div>Collection not found</div>;
+  }
+
+  // Initialize Pyodide on component mount
   useEffect(() => {
     const script = document.createElement('script')
     script.src = 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js'
@@ -62,7 +90,7 @@ const KidPythonChallenge: React.FC = () => {
           const pyodideInstance = await window.loadPyodide({
             indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/',
             stdout: (text: string) => {
-              currentOutputRef.current = text // Update ref immediately
+              currentOutputRef.current = text
               setOutput((prev) => [...prev, { type: 'output', content: text }])
             },
             stderr: (text: string) => {
@@ -88,14 +116,16 @@ const KidPythonChallenge: React.FC = () => {
     }
   }, [])
 
+  // Reset state when challenge changes
   useEffect(() => {
     setCode(challenges[currentChallenge].initialCode)
     setOutput([])
     setCodeSuccess(false)
     setShowHint(false)
-    currentOutputRef.current = '' // Reset the output ref
+    currentOutputRef.current = ''
   }, [currentChallenge])
 
+  // Handle code execution
   const runCode = async () => {
     if (!pyodide || !code.trim()) return
 
@@ -104,12 +134,13 @@ const KidPythonChallenge: React.FC = () => {
     setOutput([{ type: 'input', content: 'Running your code...' }])
     setShowClue(false)
     setShowHint(false)
-    currentOutputRef.current = '' // Reset output before running
+    currentOutputRef.current = ''
 
     try {
       await pyodide.runPythonAsync(code)
       console.log('Code execution complete, output:', currentOutputRef.current)
 
+      // Check if required code is present
       if (challenge.requiredCode && !code.includes(challenge.requiredCode)) {
         setOutput((prev) => [
           ...prev,
@@ -121,7 +152,6 @@ const KidPythonChallenge: React.FC = () => {
         return
       }
 
-      // Use the ref for validation instead of state
       console.log(
         'Attempting validation with output:',
         currentOutputRef.current
@@ -129,6 +159,7 @@ const KidPythonChallenge: React.FC = () => {
       const isValid = challenge.validateOutput(currentOutputRef.current)
       console.log('Validation result:', isValid)
 
+      // Handle successful code execution
       if (isValid) {
         const clue = getClueById(challenges[currentChallenge].clueId)
         setOutput((prev) => [
@@ -168,6 +199,7 @@ const KidPythonChallenge: React.FC = () => {
     }
   }
 
+  // Handle unlock code submission
   const handleCodeSubmit = (code: string) => {
     if (code === challenges[currentChallenge].unlockCode) {
       setCodeError(false)
@@ -183,6 +215,7 @@ const KidPythonChallenge: React.FC = () => {
     }
   }
 
+  // UI handlers
   const handleShowClue = () => {
     setShowCodeEntry(true)
   }
@@ -197,6 +230,7 @@ const KidPythonChallenge: React.FC = () => {
     }
   }
 
+  // Render completion screen
   if (isCompleted) {
     const finalClue = getClueById(challenges[challenges.length - 1].clueId)
     return (
@@ -208,14 +242,27 @@ const KidPythonChallenge: React.FC = () => {
             <p className="text-xl font-medium text-purple-600">
               {finalClue?.clue || 'No final prize location available.'}
             </p>
+            <Link href="/">
+              <Button className="mt-6 bg-green-500 hover:bg-green-600 text-lg flex items-center gap-2">
+                <Home className="h-4 w-4" />
+                Try Another Collection
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
     )
   }
 
+  // Main editor UI
   return (
     <>
+      {currentCollection && (
+        <div>
+          <h2 className="text-2xl font-bold">{currentCollection.name}</h2>
+          <p className="text-lg">{currentCollection.description}</p>
+        </div>
+      )}
       <Card className="w-full max-w-3xl">
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
@@ -311,4 +358,4 @@ const KidPythonChallenge: React.FC = () => {
   )
 }
 
-export default KidPythonChallenge
+export default PythonEditor

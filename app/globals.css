@@ -60,6 +60,14 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  h1 {
+    font-size: 6rem;
+    font-weight: bold;
+  }
+  h2 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
 }
 
 @layer base {

@@ -67,6 +67,9 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
   const [codeError, setCodeError] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
 
+  // State for handling success message and navigation
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+
   // Refs for DOM and output tracking
   const outputRef = useRef<HTMLDivElement>(null)
   const currentOutputRef = useRef('')
@@ -203,15 +206,22 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
   const handleCodeSubmit = (code: string) => {
     if (code === challenges[currentChallenge].unlockCode) {
       setCodeError(false)
-      if (currentChallenge < challenges.length - 1) {
-        setCurrentChallenge((prev) => prev + 1)
-        setShowCodeEntry(false)
-      } else {
-        setIsCompleted(true)
-        setShowCodeEntry(false)
-      }
+      setShowSuccessMessage(true) // Show success message
+      setShowCodeEntry(true) // Open the modal
     } else {
       setCodeError(true)
+    }
+  }
+
+  // New function to continue to the next challenge
+  const continueToNextChallenge = () => {
+    if (currentChallenge < challenges.length - 1) {
+      setCurrentChallenge((prev) => prev + 1)
+      setShowSuccessMessage(false) // Hide success message
+      setShowCodeEntry(false)
+    } else {
+      setIsCompleted(true)
+      setShowCodeEntry(false)
     }
   }
 
@@ -256,9 +266,9 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
 
   // Main editor UI
   return (
-    <>
+    <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 pt-8">
       {currentCollection && (
-        <div>
+        <div className="text-center mb-4">
           <h2 className="text-2xl font-bold">{currentCollection.name}</h2>
           <p className="text-lg">{currentCollection.description}</p>
         </div>
@@ -350,11 +360,13 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
       </Card>
 
       <CodeEntryDialog
-        isOpen={showCodeEntry && codeSuccess}
+        isOpen={showCodeEntry}
         hasError={codeError}
         onCodeSubmit={handleCodeSubmit}
+        successMessage={showSuccessMessage ? "🎉 You got it right! Click below to continue to the next challenge." : ""}
+        onContinue={continueToNextChallenge}
       />
-    </>
+    </div>
   )
 }
 

@@ -7,13 +7,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Home } from 'lucide-react'
 
-export default function CollectionPage({
-  params,
-}: {
-  params: { id: string }
-}) {
-  const collection = collections.find(col => col.id === params.id)
-  
+export default function CollectionPage({ params }: { params: { id: string } }) {
+  const collection = collections.find((col) => col.id === params.id)
+
   if (!collection) {
     notFound()
   }
@@ -31,4 +27,4 @@ export default function CollectionPage({
       <PythonEditor collectionId={params.id} />
     </div>
   )
-} 
+}

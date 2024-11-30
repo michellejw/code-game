@@ -17,9 +17,9 @@ export interface Clue {
 }
 
 export interface Collection {
-  id: string; // Unique identifier for the collection
-  name: string; // Name of the collection
-  description: string; // Description of the collection
-  challenges: string[]; // Array of Challenge IDs
-  clues: string[]; // Array of clue IDs included in this collection
+  id: string // Unique identifier for the collection
+  name: string // Name of the collection
+  description: string // Description of the collection
+  challenges: string[] // Array of Challenge IDs
+  clues: string[] // Array of clue IDs included in this collection
 }

@@ -53,12 +53,12 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
   // State management for Pyodide instance and loading
   const [pyodide, setPyodide] = useState<PyodideInterface | null>(null)
   const [loading, setLoading] = useState(true)
-  
+
   // State for code execution and output
   const [output, setOutput] = useState<OutputEntry[]>([])
   const [currentChallenge, setCurrentChallenge] = useState(0)
   const [code, setCode] = useState(challenges[0].initialCode)
-  
+
   // UI state management
   const [showCodeEntry, setShowCodeEntry] = useState(false)
   const [codeSuccess, setCodeSuccess] = useState(false)
@@ -66,16 +66,16 @@ const PythonEditor: React.FC<PythonEditorProps> = ({ collectionId }) => {
   const [showHint, setShowHint] = useState(false)
   const [codeError, setCodeError] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
-  
+
   // Refs for DOM and output tracking
   const outputRef = useRef<HTMLDivElement>(null)
-  const currentOutputRef = useRef('') 
+  const currentOutputRef = useRef('')
 
   // Get current collection data
-  const currentCollection = collections.find(col => col.id === collectionId);
-  
+  const currentCollection = collections.find((col) => col.id === collectionId)
+
   if (!currentCollection) {
-    return <div>Collection not found</div>;
+    return <div>Collection not found</div>
   }
 
   // Initialize Pyodide on component mount
